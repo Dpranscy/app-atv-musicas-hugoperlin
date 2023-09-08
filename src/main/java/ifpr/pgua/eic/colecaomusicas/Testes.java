@@ -4,17 +4,17 @@ import java.util.List;
 
 import com.github.hugoperlin.results.Resultado;
 
-import ifpr.pgua.eic.colecaomusicas.model.daos.ArtistaDAO;
-import ifpr.pgua.eic.colecaomusicas.model.daos.FabricaConexoes;
-import ifpr.pgua.eic.colecaomusicas.model.daos.GeneroDAO;
-import ifpr.pgua.eic.colecaomusicas.model.daos.JDBCArtistaDAO;
-import ifpr.pgua.eic.colecaomusicas.model.daos.JDBCGeneroDAO;
-import ifpr.pgua.eic.colecaomusicas.model.daos.JDBCMusicaDAO;
-import ifpr.pgua.eic.colecaomusicas.model.daos.MusicaDAO;
-import ifpr.pgua.eic.colecaomusicas.model.entities.Artista;
-import ifpr.pgua.eic.colecaomusicas.model.entities.Genero;
-import ifpr.pgua.eic.colecaomusicas.model.entities.Musica;
-import ifpr.pgua.eic.colecaomusicas.model.repositories.RepositorioMusicas;
+import ifpr.pgua.eic.colecaomusicas.models.daos.ArtistaDAO;
+import ifpr.pgua.eic.colecaomusicas.models.daos.FabricaConexoes;
+import ifpr.pgua.eic.colecaomusicas.models.daos.GeneroDAO;
+import ifpr.pgua.eic.colecaomusicas.models.daos.JDBCArtistaDAO;
+import ifpr.pgua.eic.colecaomusicas.models.daos.JDBCGeneroDAO;
+import ifpr.pgua.eic.colecaomusicas.models.daos.JDBCMusicaDAO;
+import ifpr.pgua.eic.colecaomusicas.models.daos.MusicaDAO;
+import ifpr.pgua.eic.colecaomusicas.models.entities.Artista;
+import ifpr.pgua.eic.colecaomusicas.models.entities.Genero;
+import ifpr.pgua.eic.colecaomusicas.models.entities.Musica;
+import ifpr.pgua.eic.colecaomusicas.models.repositories.RepositorioMusicas;
 
 public class Testes {
  
