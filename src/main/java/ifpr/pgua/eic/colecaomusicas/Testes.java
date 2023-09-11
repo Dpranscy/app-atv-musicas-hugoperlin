@@ -26,7 +26,7 @@ public class Testes {
 
         RepositorioMusicas repositorio = new RepositorioMusicas(musicaoDAO, artistaDAO, generoDAO);
 
-        Resultado resultado = repositorio.listar();
+        Resultado resultado = repositorio.listarMusicas();
         System.out.println(resultado.getMsg());
         List<Musica> lista = (List)resultado.comoSucesso().getObj();
 

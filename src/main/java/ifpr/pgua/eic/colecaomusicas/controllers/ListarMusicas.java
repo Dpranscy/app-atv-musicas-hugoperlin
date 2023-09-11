@@ -71,7 +71,7 @@ public class ListarMusicas implements Initializable {
         tbcArtista.setCellValueFactory(celula->new SimpleStringProperty(celula.getValue().getArtista().getNome()));
         tbcGenero.setCellValueFactory(celula -> new SimpleStringProperty(celula.getValue().getGenero().getNome()));
 
-        Resultado rs = repositorio.listar();
+        Resultado rs = repositorio.listarMusicas();
 
         if(rs.foiErro()){
             Alert alert = new Alert(AlertType.ERROR,rs.getMsg());

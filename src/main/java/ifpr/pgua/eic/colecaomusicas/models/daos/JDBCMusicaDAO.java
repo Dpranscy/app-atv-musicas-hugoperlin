@@ -12,8 +12,9 @@ import com.github.hugoperlin.results.Resultado;
 import ifpr.pgua.eic.colecaomusicas.models.entities.Musica;
 
 public class JDBCMusicaDAO implements MusicaDAO{
-    private static final String INSERTSQL = "INSERT INTO musicas(nome,duracao,anoLancamento,artistaId,generoId) VALUES (?,?,?,?,?)";
-    private static final String SELECTSQL = "SELECT * FROM musicas";
+    private static final String INSERTSQL = "INSERT INTO MS_musicas(nome,duracao,anoLancamento,artistaId,generoId) VALUES (?,?,?,?,?)";
+    private static final String SELECTSQL = "SELECT * FROM MS_musicas";
+    private static final String SELECTFROMPLAYLISTSQL = "SELECT m.* FROM MS_musicas m, MS_playlist_musicas pm, MS_artistas a WHERE m.id = pm.musicaId AND pm.playlistId = ? AND a.id = m.artistaId";
 
     private FabricaConexoes fabrica;
 
@@ -81,6 +82,34 @@ public class JDBCMusicaDAO implements MusicaDAO{
     
     }
 
+    public Resultado listarMusicaPlaylist(Integer playlistId) {
+
+        try (Connection con=fabrica.getConnection()) {
+            PreparedStatement pstm=con.prepareStatement(SELECTFROMPLAYLISTSQL);
+            pstm.setInt(1, playlistId);
+            ResultSet rs=pstm.executeQuery();
+
+            ArrayList<Musica> lista=new ArrayList<>();
+
+            while (rs.next()) {
+                int id=rs.getInt("id");
+                String nome=rs.getString("nome");
+                int duracao=rs.getInt("duracao");
+                int anoLancamento=rs.getInt("anoLancamento");
+
+                Musica musica=new Musica(id, nome, anoLancamento, duracao, null, null);
+                lista.add(musica);
+            }
+            rs.close();
+            pstm.close();
+            con.close();
+
+            return Resultado.sucesso("Lista de musicas da playlist", lista);
+        } catch (SQLException e) {
+            return Resultado.erro(e.getMessage());
+        }
+    }
+
     @Override
     public Resultado atualizar(int id, Musica nova) {
         // TODO Auto-generated method stub
@@ -92,7 +121,4 @@ public class JDBCMusicaDAO implements MusicaDAO{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deletar'");
     }
-
-    
-
 }

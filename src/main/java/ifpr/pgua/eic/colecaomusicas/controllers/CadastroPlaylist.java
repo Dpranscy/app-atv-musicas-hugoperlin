@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import com.github.hugoperlin.results.Resultado;
 
 import ifpr.pgua.eic.colecaomusicas.App;
+
 //entities
 import ifpr.pgua.eic.colecaomusicas.models.entities.Artista;
 import ifpr.pgua.eic.colecaomusicas.models.entities.Genero;
@@ -20,8 +21,10 @@ import ifpr.pgua.eic.colecaomusicas.models.repositories.RepositorioMusicas;
 import ifpr.pgua.eic.colecaomusicas.models.repositories.RepositorioPlaylists;
 
 import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -31,7 +34,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 
-public class CadastroPlaylist {
+public class CadastroPlaylist implements Initializable{
 
     @FXML
     private Button btCancelar;
@@ -87,7 +90,7 @@ public class CadastroPlaylist {
 
     private void updateCbox(){
         cbEscolherPlaylist.getItems().clear();
-        Resultado r2=repositorioPlaylists.listarPlaylist();
+        Resultado r2=repositorioPlaylists.listarPlaylists();
 
         if(r2.foiSucesso()) {
             List<Playlist> listaPlaylists=(List) r2.comoSucesso().getObj();
@@ -100,7 +103,7 @@ public class CadastroPlaylist {
     }
 
     @FXML
-    void InserirNaPlaylist(ActionEvent event) {
+    void InserirPlaylist(ActionEvent event) {
         int idPlaylist=cbEscolherPlaylist.getValue().getId();
 
         List<Musica> selecionadoMusicas=lstMusicas.getSelectionModel().getSelectedItems();
@@ -110,11 +113,10 @@ public class CadastroPlaylist {
             getMusicaIdLista.add(musica.getId());
         }
 
-        Resultado r=repositorioPlaylists.linkPlaylistMusica(getMusicaIdLista, idPlaylist);
+        Resultado r=repositorioPlaylists.conexaoPlaylistMusica(getMusicaIdLista, idPlaylist);
         if (r.foiSucesso()) {
             Alert alert=new Alert(AlertType.INFORMATION, r.getMsg());
             alert.showAndWait();
-
         } 
         else{
             Alert alert=new Alert(AlertType.ERROR, r.getMsg());
@@ -124,9 +126,8 @@ public class CadastroPlaylist {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
-
         lstMusicas.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        Resultado r1=repositorioMusicas.listarMusica();
+        Resultado r1=repositorioMusicas.listarMusicas();
 
         if(r1.foiSucesso()){
             List<Musica> listaMusicas=(List) r1.comoSucesso().getObj();

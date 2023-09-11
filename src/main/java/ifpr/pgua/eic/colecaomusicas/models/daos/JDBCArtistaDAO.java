@@ -27,7 +27,7 @@ public class JDBCArtistaDAO implements ArtistaDAO{
             //Preparar o comando sql, com o parâmetro para
             //pegar a chave que acabou de ser criada
             PreparedStatement pstm = con.
-            prepareStatement("INSERT INTO artistas(nome,contato) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
+            prepareStatement("INSERT INTO MS_artistas(nome,contato) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
             
             //Ajustar os parâmetros
             pstm.setString(1,artista.getNome());
@@ -57,7 +57,7 @@ public class JDBCArtistaDAO implements ArtistaDAO{
     public Resultado listar() {
         
         try (Connection con = fabrica.getConnection()) {
-            PreparedStatement pstm = con.prepareStatement("SELECT * FROM artistas");
+            PreparedStatement pstm = con.prepareStatement("SELECT * FROM MS_artistas");
 
             ResultSet rs = pstm.executeQuery();
 
@@ -85,7 +85,7 @@ public class JDBCArtistaDAO implements ArtistaDAO{
 
         try (Connection con = fabrica.getConnection()) {
 
-            PreparedStatement pstm = con.prepareStatement("SELECT * FROM artistas WHERE id=?");
+            PreparedStatement pstm = con.prepareStatement("SELECT * FROM MS_artistas WHERE id=?");
 
             pstm.setInt(1, id);
 
@@ -115,7 +115,7 @@ public class JDBCArtistaDAO implements ArtistaDAO{
         
         try (Connection con = fabrica.getConnection()) {
 
-            PreparedStatement pstm = con.prepareStatement("SELECT artistaId FROM musicas WHERE id=?");
+            PreparedStatement pstm = con.prepareStatement("SELECT artistaId FROM MS_musicas WHERE id=?");
 
             pstm.setInt(1, musicaId);
 

@@ -1,6 +1,7 @@
 package ifpr.pgua.eic.colecaomusicas.controllers;
 
 import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -18,18 +19,21 @@ import ifpr.pgua.eic.colecaomusicas.models.entities.Musica;
 import ifpr.pgua.eic.colecaomusicas.models.entities.Playlist;
 
 import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+
 import javafx.scene.input.MouseEvent;
 
 public class ListarPlaylists implements Initializable {
 
-    private RepositorioPlaylists repositorioPlaylist;
+    private RepositorioPlaylists repositorioPlaylists;
     private RepositorioMusicas repositorioMusicas;
 
     @FXML
@@ -41,8 +45,8 @@ public class ListarPlaylists implements Initializable {
     @FXML
     private TextArea taMusicasPlaylist;
 
-    public ListarPlaylists(RepositorioPlaylists repositorioPlaylist2, RepositorioMusicas repositorioMusicas2) {
-        this.repositorioPlaylist=repositorioPlaylist2;
+    public ListarPlaylists(RepositorioPlaylists repositorioPlaylists2, RepositorioMusicas repositorioMusicas2) {
+        this.repositorioPlaylists=repositorioPlaylists2;
         this.repositorioMusicas=repositorioMusicas2;
     }
 
@@ -55,7 +59,7 @@ public class ListarPlaylists implements Initializable {
     void selecionarPlaylist(MouseEvent event) {
         Integer idPlaylist=lstPlaylists.getSelectionModel().getSelectedItem().getId();
 
-        Resultado musicas=repositorioMusicas.listarPlaylist_musica(idPlaylist);
+        Resultado musicas=repositorioMusicas.listarMusicaPlaylist(idPlaylist);
         List<Musica> lista=(List) musicas.comoSucesso().getObj();
 
         if (lista!=null) {
@@ -63,7 +67,7 @@ public class ListarPlaylists implements Initializable {
 
             for (Musica musica : lista) {
                 taMusicasPlaylist.appendText(musica.getNome()+" - ");
-                taMusicasPlaylist.appendText(musica.getArtista().getNome() + "\n");
+                taMusicasPlaylist.appendText(musica.getArtista().getNome()+"\n");
             }
         }
     }
@@ -71,13 +75,13 @@ public class ListarPlaylists implements Initializable {
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         lstPlaylists.getItems().clear();
-        Resultado resultado=repositorioPlaylist.listarPlaylist();
+        Resultado resultado=repositorioPlaylists.listarPlaylists();
 
         if (resultado.foiErro()) {
             Alert alert=new Alert(AlertType.ERROR, resultado.getMsg());
             alert.showAndWait();
         } else {
-            List lista=(List) resultado.comoSucesso().getObj();
+            List<Playlist> lista=(List) resultado.comoSucesso().getObj();
             lstPlaylists.getItems().addAll(lista);
         }
     }

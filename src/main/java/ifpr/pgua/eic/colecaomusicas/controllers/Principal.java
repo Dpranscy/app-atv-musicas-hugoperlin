@@ -1,11 +1,13 @@
 package ifpr.pgua.eic.colecaomusicas.controllers;
 
 import ifpr.pgua.eic.colecaomusicas.App;
+
+import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 
 public class Principal {
     
-
     @FXML
     private void cadastrarGenero(){
         App.pushScreen("CADASTROGENERO");
@@ -26,7 +28,7 @@ public class Principal {
         App.pushScreen("LISTARARTISTAS");
     }
 
-        @FXML
+    @FXML
     private void cadastrarMusica(){
         App.pushScreen("CADASTRARMUSICA");
     }
@@ -36,4 +38,13 @@ public class Principal {
         App.pushScreen("LISTARMUSICAS");
     }
 
+    @FXML
+    private void cadastrarPlaylist(){
+        App.pushScreen("CADASTRARPLAYLIST");
+    }
+
+    @FXML
+    private void listarPlaylists(){
+        App.pushScreen("LISTARPLAYLISTS");
+    }
 }

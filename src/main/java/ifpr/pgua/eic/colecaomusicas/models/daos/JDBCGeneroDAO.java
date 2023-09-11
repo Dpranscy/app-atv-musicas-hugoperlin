@@ -25,7 +25,7 @@ public class JDBCGeneroDAO implements GeneroDAO {
             Connection con = fabrica.getConnection();
 
             // Preparar o comando sql
-            PreparedStatement pstm = con.prepareStatement("INSERT INTO generos(nome) VALUES (?)");
+            PreparedStatement pstm = con.prepareStatement("INSERT INTO MS_generos(nome) VALUES (?)");
             // Ajustar os parâmetros
             pstm.setString(1, genero.getNome());
             // Executar o comando
@@ -47,7 +47,7 @@ public class JDBCGeneroDAO implements GeneroDAO {
         try {
             Connection con = fabrica.getConnection();
 
-            PreparedStatement pstm = con.prepareStatement("SELECT * FROM generos");
+            PreparedStatement pstm = con.prepareStatement("SELECT * FROM MS_generos");
 
             ResultSet rs = pstm.executeQuery();
 
@@ -78,7 +78,7 @@ public class JDBCGeneroDAO implements GeneroDAO {
     public Resultado buscarGeneroMusica(int musicaId) {
         try (Connection con = fabrica.getConnection()) {
 
-            PreparedStatement pstm = con.prepareStatement("SELECT generoId FROM musicas WHERE id=?");
+            PreparedStatement pstm = con.prepareStatement("SELECT generoId FROM MS_musicas WHERE id=?");
 
             pstm.setInt(1, musicaId);
 
@@ -98,7 +98,7 @@ public class JDBCGeneroDAO implements GeneroDAO {
     public Resultado getById(int id) {
         try (Connection con = fabrica.getConnection()) {
 
-            PreparedStatement pstm = con.prepareStatement("SELECT * FROM generos WHERE id=?");
+            PreparedStatement pstm = con.prepareStatement("SELECT * FROM MS_generos WHERE id=?");
 
             pstm.setInt(1, id);
 

@@ -46,7 +46,7 @@ public class RepositorioMusicas {
 
     }
 
-    public Resultado listar(){
+    public Resultado listarMusicas(){
         
         Resultado resultado = dao.listar();
 
@@ -71,13 +71,32 @@ public class RepositorioMusicas {
                 Genero genero = (Genero)r2.comoSucesso().getObj();
                 musica.setGenero(genero);
             }
-
         }
-
         return resultado;
-
-
     }
 
-    
+    public Resultado listarMusicaPlaylist(Integer idPlaylist){
+        Resultado resultado=dao.listarMusicaPlaylist(idPlaylist);
+
+        if(resultado. foiSucesso()){
+            List<Musica> listar=(List<Musica>) resultado.comoSucesso().getObj();
+
+            for(Musica musica : listar){
+                Resultado r1=artistaDAO.buscarArtistaMusica(musica.getId());
+                if(r1.foiErro()){
+                    return r1;
+                }
+                Artista artista=(Artista) r1.comoSucesso().getObj();
+                musica.setArtista(artista);
+
+                Resultado r2=generoDAO.buscarGeneroMusica(musica.getId());
+                if(r2.foiErro()){
+                    return r2;
+                }
+                Genero genero=(Genero) r2.comoSucesso().getObj();
+                musica.setGenero(genero);
+            }
+        }
+        return resultado;
+    }
 }

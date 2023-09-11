@@ -16,10 +16,6 @@ import ifpr.pgua.eic.colecaomusicas.models.entities.Playlist;
 
 public class JDBCPlaylistDAO implements PlaylistDAO{
     
-    private static final String INSERTSQL = "INSERT INTO MS_musicas(nome,duracao,anoLancamento,artistaId,generoId) VALUES (?,?,?,?,?)";
-    private static final String SELECTSQL = "SELECT * FROM MS_musicas";
-    private static final String SELECTFROMPLAYLISTSQL = "SELECT m.* FROM MS_musicas m, MS_playlist_musicas pm, MS_artistas a WHERE m.id = pm.musicaId AND pm.playlistId = ? AND a.id = m.artistaId";
-
     private FabricaConexoes fabrica;
 
     public JDBCPlaylistDAO(FabricaConexoes fabrica){
@@ -29,7 +25,7 @@ public class JDBCPlaylistDAO implements PlaylistDAO{
     @Override
     public Resultado criar(Playlist playlist){
         try(Connection con=fabrica.getConnection()){
-            PreparedStatement pstm=con.prepareStatement("insert into MS_playlist(nome) values (?)");
+            PreparedStatement pstm=con.prepareStatement("INSERT INTO MS_playlist(nome) VALUES (?)");
             pstm.setString(1,playlist.getNome());
             int ret=pstm.executeUpdate();
             con.close();
@@ -37,7 +33,7 @@ public class JDBCPlaylistDAO implements PlaylistDAO{
             if(ret==1){
                 return Resultado.sucesso("Playlist Cadastrada!", playlist);
             }
-            return Resultado.erro(e.getMessage());
+            return Resultado.erro("Erro, não identificado!");
         }
         catch(SQLException e){
             return Resultado.erro(e.getMessage());
@@ -47,7 +43,7 @@ public class JDBCPlaylistDAO implements PlaylistDAO{
     @Override
     public Resultado listar(){
         try(Connection con=fabrica.getConnection()){
-            PreparedStatement pstm=con.prepareStatement("SELECT * FROM MS_playlists")
+            PreparedStatement pstm=con.prepareStatement("SELECT * FROM MS_playlists");
             ResultSet rs=pstm.executeQuery();
             ArrayList<Playlist> lista=new ArrayList<>();
 
@@ -70,31 +66,6 @@ public class JDBCPlaylistDAO implements PlaylistDAO{
         }
     }
 
-    public Resultado conectarMusicaPlaylist(List<Integer> playlistId, List<Integer> musicasId){
-        try(Connection con=fabrica.getConnection()){
-            int ret;
-            PreparedStatement pstm=con
-                .prepareStatement("INSERT INTO MS_playlist_musicas(playlistId, musicaId) VALUES (?, ?)")
-            
-            //REVER
-            for(Integer i : musicasId){
-                pstm.setInt(1,playlistId);
-                pstm.setInt(2,i);
-
-                ret=pstm.executeUpdate();
-                if(ret!=1){
-                    return Resultado.erro("Erro não identificado!!!");
-                }
-            }
-
-            con.close();
-            return Resultado.sucesso("Playlist e musicas conectadas", pstm);
-        }
-        catch(SQLException e){
-            return Resultado.erro(e.getMessage());
-        }
-    }
-
     @Override
     public Resultado getById(int id){
         throw new UnsupportedOperationException("Unimplemented method 'getById'");
@@ -108,5 +79,29 @@ public class JDBCPlaylistDAO implements PlaylistDAO{
     @Override
     public Resultado delete(int id) {
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    }
+
+    public Resultado conectarMusicaPlaylist(List<Integer> musicasId, Integer playlistId){
+        try(Connection con=fabrica.getConnection()){
+            int ret;
+            PreparedStatement pstm=con
+                .prepareStatement("INSERT INTO MS_playlist_musicas(playlistId, musicaId) VALUES (?, ?)");
+            
+            //REVER
+            for(Integer conect : musicasId){
+                pstm.setInt(1,playlistId);
+                pstm.setInt(2,conect);
+
+                ret=pstm.executeUpdate();
+                if(ret!=1){
+                    return Resultado.erro("Erro não identificado!!!");
+                }
+            }
+            con.close();
+            return Resultado.sucesso("Playlist e musicas conectadas", pstm);
+        }
+        catch(SQLException e){
+            return Resultado.erro(e.getMessage());
+        }
     }
 }
